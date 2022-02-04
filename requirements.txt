@@ -31,3 +31,5 @@ termcolor
 ##NN: +
 fastapi
 uvicorn
+tensorflow
+cv2
