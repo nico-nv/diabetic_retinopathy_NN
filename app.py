@@ -2,11 +2,13 @@
 
 import streamlit as st
 
-import requests
+###API
+#import requests
 
-#import numpy as np
-#import tensorflow as tf
-#from PIL import Image
+###NO_API
+import numpy as np
+import tensorflow as tf
+from PIL import Image
 
 st.markdown("""
     # Diabetic Retinopathy
@@ -19,54 +21,47 @@ image = st.file_uploader("Upload an image", type=["jpeg", 'jpg', 'png'])
 if st.button("Make Prediction"):
     if image is not None:
 
-        api_url = "http://localhost:8000/predict/"
-        params = {"img_file": image.getvalue()}
-        response = requests.get(api_url, files=params)
-        prediction = response.json()
+        ###API
 
-        st.image(image, caption=prediction, use_column_width=True)
+        #api_url = "http://localhost:8000/predict/"
+        #params = {"img_file": image.getvalue()}
+        #response = requests.get(api_url, files=params)
+        #prediction = response.json()
 
-        #image = Image.open(image)
-        #img = np.asarray(image.resize((224, 224)))[..., :3]
-        #img = np.expand_dims(img, 0)
+        #st.image(image, caption=prediction, use_column_width=True)
 
-    ##fp = f'{path}/{ls_4[0]}'
-    ##img = cv2.imread(image)
-    ##img = cv2.resize(img, (224, 224))
-    ##img = np.expand_dims(img, 0)
+        ###NO_API
 
-    ## Load the TFLite model and allocate tensors.
-    #interpreter = tf.lite.Interpreter("model.tflite")
-    #interpreter.allocate_tensors()
+        image = Image.open(image)
+        img = np.asarray(image.resize((224, 224)))[..., :3]
+        img = np.expand_dims(img, 0)
 
-    ## Get input and output tensors.
-    #input_details = interpreter.get_input_details()
-    #output_details = interpreter.get_output_details()
+        interpreter = tf.lite.Interpreter("model.tflite")
+        interpreter.allocate_tensors()
 
-    ## Test the model on random input data.
-    #input_shape = input_details[0]['shape']
-    #input_data = np.array(img, dtype=np.uint8)  #NN: + img
-    #interpreter.set_tensor(input_details[0]['index'], input_data)
-    #interpreter.invoke()
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
 
-    ## The function `get_tensor()` returns a copy of the tensor data.
-    ## Use `tensor()` in order to get a pointer to the tensor.
-    #output_data = interpreter.get_tensor(output_details[0]['index'])
-    ##print(output_data)
+        input_shape = input_details[0]['shape']
+        input_data = np.array(img, dtype=np.uint8)  #NN: + img
+        interpreter.set_tensor(input_details[0]['index'], input_data)
+        interpreter.invoke()
 
-    #output_probs = tf.math.softmax(output_data / 255)
+        output_data = interpreter.get_tensor(output_details[0]['index'])
 
-    ##labels = [2, 0, 4]
+        output_probs = tf.math.softmax(output_data / 255)
 
-    #d = {
-    #    "0": np.round(output_probs.numpy()[0][1], 2),
-    #    "2": np.round(output_probs.numpy()[0][0], 2),
-    #    "4": np.round(output_probs.numpy()[0][2], 2)
-    #}
+        ###labels = [2, 0, 4]
 
-    #c = max(d, key=d.get)
+        d = {
+            "0": np.round(output_probs.numpy()[0][1], 2),
+            "2": np.round(output_probs.numpy()[0][0], 2),
+            "4": np.round(output_probs.numpy()[0][2], 2)
+            }
 
-    #st.image(image, caption=c, use_column_width=True)
+        c = max(d, key=d.get)
+
+        st.image(image, caption=c, use_column_width=True)
 
 
 ###make streamlit
