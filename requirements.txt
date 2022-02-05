@@ -35,4 +35,4 @@ termcolor
 tensorflow-cpu
 #cv2
 streamlit
-PIL
+pillow

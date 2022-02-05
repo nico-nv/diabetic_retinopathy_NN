@@ -1,17 +1,9 @@
 #NN: Nuevo
 
-#def hello_world():
-#    return "Hello world"
-
-#if __name__ == "__main__":
-#    print(hello_world())
-
-
 import numpy as np
 import pandas as pd
 import cv2
 import tensorflow as tf
-
 
 def predict_imagen(imagen):
 
@@ -52,6 +44,3 @@ def predict_imagen(imagen):
     c = max(d, key=d.get)
 
     return c
-
-#if __name__ == "__main__":
-#    print(predict(imagen))
