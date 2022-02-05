@@ -1,1 +1,1 @@
-web: pip install . -U && diabetic_retinopathy_NN-run
+web: sh setup.sh && streamlit run app.py
