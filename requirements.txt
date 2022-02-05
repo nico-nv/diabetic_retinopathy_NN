@@ -7,7 +7,7 @@ wheel>=0.29
 # data science
 numpy
 pandas
-scikit-learn
+#scikit-learn
 
 # tests/linter
 black
@@ -18,8 +18,8 @@ yapf
 
 # API
 gcsfs
-google-cloud-storage
-mlflow
+#google-cloud-storage
+#mlflow
 s3fs
 
 # utilities
@@ -29,7 +29,10 @@ memoized-property
 termcolor
 
 ##NN: +
-fastapi
-uvicorn
-tensorflow
-cv2
+#fastapi
+#uvicorn
+#tensorflow
+tensorflow-cpu
+#cv2
+streamlit
+PIL

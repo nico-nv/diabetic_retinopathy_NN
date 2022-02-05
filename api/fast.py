@@ -2,8 +2,16 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import UploadFile, File
+import uvicorn
 
-#from diabetic_retinopathy_NN.predict import predict
+import numpy as np
+import pandas as pd
+import cv2
+import tensorflow as tf
+
+from diabetic_retinopathy_NN.read import read_imagen
+from diabetic_retinopathy_NN.predict import predict_imagen
 
 app = FastAPI()
 
@@ -20,55 +28,25 @@ def index():
     return {"greeting": "Hello world"}
 
 #@app.get("/predict")
-#def predict():
-#    return {"greeting": "Hello world 2"}
+#def predict_imagen(imagen):
+#    return f"hola {imagen}"
 
-import numpy as np
-import pandas as pd
-#import os
-import cv2
-import tensorflow as tf
 
-@app.get("/predict")
-def predict(imagen):
+@app.post("/predict/image")
+async def predict_api(file: UploadFile = File(...)):
+    extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png")
+    if not extension:
+        return "Image must be jpg or png format!"
+    image = read_imagen(await file.read())
+    prediction = predict_imagen(image)
 
-    #fp = f'{path}/{ls_4[0]}'
-    img = cv2.imread(imagen)
-    img = cv2.resize(img, (224, 224))
-    img = np.expand_dims(img, 0)
+    return prediction
 
-    # Load the TFLite model and allocate tensors.
-    interpreter = tf.lite.Interpreter("model.tflite")
-    interpreter.allocate_tensors()
 
-    # Get input and output tensors.
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
 
-    # Test the model on random input data.
-    input_shape = input_details[0]['shape']
-    input_data = np.array(img, dtype=np.uint8)  #NN: + img
-    interpreter.set_tensor(input_details[0]['index'], input_data)
-    interpreter.invoke()
-
-    # The function `get_tensor()` returns a copy of the tensor data.
-    # Use `tensor()` in order to get a pointer to the tensor.
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-    #print(output_data)
-
-    output_probs = tf.math.softmax(output_data / 256)
-
-    #labels = [2, 0, 4]
-
-    d = {
-        "0": np.round(output_probs.numpy()[0][1], 2),
-        "2": np.round(output_probs.numpy()[0][0], 2),
-        "4": np.round(output_probs.numpy()[0][2], 2)
-    }
-
-    c = max(d, key=d.get)
-
-    return c
+#if __name__ == "__main__":
+#    uvicorn api.fast:app --reload
+#    uvicorn api.fast:app --host 0.0.0.0 --port $PORT
 
 #make run_api
 #http://localhost:8000/

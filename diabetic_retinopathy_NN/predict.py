@@ -9,12 +9,11 @@
 
 import numpy as np
 import pandas as pd
-#import os
 import cv2
 import tensorflow as tf
 
 
-def predict(imagen):
+def predict_imagen(imagen):
 
     #fp = f'{path}/{ls_4[0]}'
     img = cv2.imread(imagen)

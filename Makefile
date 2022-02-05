@@ -61,3 +61,25 @@ pypi:
 #NN: + run_api
 run_api:
 	uvicorn api.fast:app --reload  # load web server with code autoreload
+
+#NN: + Heroku Commands
+# ----------------------------------
+#         HEROKU COMMANDS
+# ----------------------------------
+
+streamlit:
+	-@streamlit run app.py
+
+heroku_login:
+	-@heroku login
+
+heroku_upload_public_key:
+	-@heroku keys:add ~/.ssh/id_ed25519.pub
+
+#NN: APP_NAME = diabetic-retinopathy-nn
+heroku_create_app:
+	-@heroku create --ssh-git ${diabetic-retinopathy-nn}
+
+deploy_heroku:
+	-@git push heroku master
+	-@heroku ps:scale web=1
