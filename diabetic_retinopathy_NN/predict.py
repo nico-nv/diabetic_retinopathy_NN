@@ -5,12 +5,17 @@ import pandas as pd
 import cv2
 import tensorflow as tf
 
-def predict_imagen(imagen):
+from PIL import Image
+
+def predict_imagen(imagen: Image.Image):
+
+    img = np.asarray(imagen.resize((224, 224)))[..., :3]
+    img = np.expand_dims(img, 0)
 
     #fp = f'{path}/{ls_4[0]}'
-    img = cv2.imread(imagen)
-    img = cv2.resize(img, (224,224))
-    img = np.expand_dims(img,0)
+    #img = cv2.imread(imagen)
+    #img = cv2.resize(img, (224,224))
+    #img = np.expand_dims(img,0)
 
     # Load the TFLite model and allocate tensors.
     interpreter = tf.lite.Interpreter("model.tflite")

@@ -3,9 +3,8 @@
 import numpy as np
 import streamlit as st
 from PIL import Image
-#import requests
+import requests
 
-#import cv2
 import tensorflow as tf
 
 st.markdown("""
@@ -13,16 +12,17 @@ st.markdown("""
     ## subtitles
 """)
 
-img_file_buffer = st.file_uploader("Upload an image", type=["jpeg"])
+img_file_buffer = st.file_uploader("Upload an image", type=["jpeg", 'jpg', 'png'])
 
 if img_file_buffer is not None:
     image = Image.open(img_file_buffer)
-    #img_array = np.array(image) # if you want to pass it to OpenCV
 
-    #url = "http://localhost:8000/predict"
-    #params = dict(imagen=1010)
-    #response = requests.get(url, params=img_array)
+    #url = "http://localhost:8000/predict/image"
+    #params = dict(file=image)
+    #response = requests.get(url, params=image)
     #prediction = response.json()
+
+    #st.image(image, caption=prediction, use_column_width=True)
 
     img = np.asarray(image.resize((224, 224)))[..., :3]
     img = np.expand_dims(img, 0)
@@ -67,7 +67,3 @@ if img_file_buffer is not None:
 
 
 #make streamlit
-
-#params
-#'imagen': array([[[0, 0, 0], [0, 0, 0], [0, 0, 0], ..., [0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0], ..., [0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0], ..., [0, 0, 0], [0, 0, 0], [0, 0, 0]], ..., [[0, 0, 0], [0, 0, 0], [0, 0, 0], ..., [0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0], ..., [0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0], ..., [0, 0, 0], [0, 0, 0], [0, 0, 0]]], dtype=uint8)}
-#= img = cv2.imread(fp)
