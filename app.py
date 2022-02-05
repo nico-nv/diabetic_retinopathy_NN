@@ -64,4 +64,4 @@ if st.button("Make Prediction"):
         st.image(image, caption=c, use_column_width=True)
 
 
-###make streamlit
+####make streamlit
