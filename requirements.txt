@@ -29,10 +29,9 @@ memoized-property
 termcolor
 
 ##NN: +
-#fastapi
-#uvicorn
-#tensorflow
-tensorflow-cpu
-#cv2
 streamlit
+requests
+fastapi
+uvicorn
+tensorflow-cpu
 pillow
